@@ -52,7 +52,7 @@
 			);
 			target = 230D0B862E8C4CFD00BDFC5C /* simpleCountingWidgetAppleExampleExtension */;
 		};
-		230D0BA62E8C4E9800BDFC5C /* Exceptions for "iosApp" folder in "simpleCountingWidgetAppleExampleExtension" target */ = {
+		235F037D2E8DE956009CD2A7 /* Exceptions for "iosApp" folder in "simpleCountingWidgetAppleExampleExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				BackgroundIntent.swift,
@@ -78,7 +78,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				25F6D017253DDE1ED6CB14F9 /* Exceptions for "iosApp" folder in "iosApp" target */,
-				230D0BA62E8C4E9800BDFC5C /* Exceptions for "iosApp" folder in "simpleCountingWidgetAppleExampleExtension" target */,
+				235F037D2E8DE956009CD2A7 /* Exceptions for "iosApp" folder in "simpleCountingWidgetAppleExampleExtension" target */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";

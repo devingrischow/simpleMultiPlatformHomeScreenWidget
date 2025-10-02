@@ -41,7 +41,7 @@ public struct BackgroundIntent: AppIntent {
 
         let newCount = c.incrementValue(currVal: Int32(counterValue))
         
-        prefs?.set(newCount, forKey: countingKey)
+        prefs?.set(Int(newCount), forKey: countingKey)
         
         WidgetCenter.shared.reloadAllTimelines()
 

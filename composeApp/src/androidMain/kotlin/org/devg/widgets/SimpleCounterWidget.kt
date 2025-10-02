@@ -15,7 +15,7 @@ import androidx.glance.layout.Row
 import androidx.glance.text.Text
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.glance.LocalContext
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
@@ -31,11 +31,15 @@ import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.width
 import org.devg.app.CounterHandler
+import androidx.core.content.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 
+val INSTANCEKEY = "group.example.widget_group"
 
 object SimpleCounterWidget: GlanceAppWidget() {
 
     val countKey = intPreferencesKey(CounterHandler().countKey)
+
 
 
     override suspend fun provideGlance(
@@ -112,6 +116,8 @@ object SimpleCounterWidget: GlanceAppWidget() {
 
 
 
+
+
 class SimpleCounterWidgetReceiver: GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget
         get() = SimpleCounterWidget
@@ -126,15 +132,26 @@ class IncrementActionCallback: ActionCallback {
         parameters: ActionParameters
     ) {
         updateAppWidgetState(context, glanceId) { prefs ->
-            val currentCount = prefs[SimpleCounterWidget.countKey]
-            if (currentCount != null) {
-                prefs[SimpleCounterWidget.countKey] = CounterHandler().incrementValue(currentCount)
-            }else{
-                prefs[SimpleCounterWidget.countKey] = 1
-            }
+            val sharedPrefs = context.getSharedPreferences(INSTANCEKEY, Context.MODE_PRIVATE)
+            val currentCount = sharedPrefs
+                .getInt(CounterHandler().countKey, 0)
+
+
+                val newCount = CounterHandler().incrementValue(currentCount)
+
+                //Update the storage with the NEw Value
+                sharedPrefs
+                    .edit {
+                        putInt(CounterHandler().countKey, newCount)
+                    }
+
+            //Update the Widget Preference
+            prefs[SimpleCounterWidget.countKey] = newCount
         }
         SimpleCounterWidget.update(context, glanceId)
+
     }
+
 
 }
 
@@ -145,12 +162,22 @@ class DecrementActionCallback: ActionCallback {
         parameters: ActionParameters
     ) {
         updateAppWidgetState(context, glanceId) { prefs ->
-            val currentCount = prefs[SimpleCounterWidget.countKey]
-            if (currentCount != null) {
-                prefs[SimpleCounterWidget.countKey] = CounterHandler().decrementValue(currentCount)
-            }else{
-                prefs[SimpleCounterWidget.countKey] = 1
-            }
+            val sharedPrefs = context.getSharedPreferences(INSTANCEKEY, Context.MODE_PRIVATE)
+
+            val currentCount = sharedPrefs
+                .getInt(CounterHandler().countKey, 0)
+
+
+            val newCount = CounterHandler().decrementValue(currentCount)
+
+            //Update the storage with the NEW Value
+            sharedPrefs
+                .edit {
+                    putInt(CounterHandler().countKey, newCount)
+                }
+
+            prefs[SimpleCounterWidget.countKey] = newCount
+
         }
         SimpleCounterWidget.update(context, glanceId)
     }

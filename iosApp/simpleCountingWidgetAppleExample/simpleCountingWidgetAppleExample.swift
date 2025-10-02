@@ -11,7 +11,6 @@ import ComposeApp
 
 
 private let widgetGroupId = "group.example.widget_group"
-let countKey = "count";
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
@@ -22,7 +21,9 @@ struct Provider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
         let prefs = UserDefaults.init(suiteName: widgetGroupId)
-        let counterValue = prefs?.integer(forKey: countKey) ?? 0
+        let counterValue = prefs?.integer(forKey: CounterHandler().countKey) ?? 0
+        
+        print("Get Snapshot Counter Value: \(counterValue) \n")
         
         let entry = SimpleEntry(date: Date(), count: counterValue)
         completion(entry)

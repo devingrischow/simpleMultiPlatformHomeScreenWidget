@@ -46,6 +46,7 @@ kotlin {
             //Glance Imports
             implementation(libs.androidx.glance)
             implementation(libs.androidx.glance.appwidget)
+            implementation("androidx.datastore:datastore-core:1.1.1")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
