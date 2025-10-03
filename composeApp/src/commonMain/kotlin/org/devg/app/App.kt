@@ -28,13 +28,29 @@ fun App() {
         val retroCount = getCountFromUserPreference("group.example.widget_group", CounterHandler().countKey)
 
 
+//        var didLaunchFromURL by remember { mutableStateOf<String>(getDidLaunchFromWidget() ?: "") }
+
+        var didLaunchFromURL by remember { mutableStateOf<String>("") }
 
         //Get the curr count, increase it, and send it
         var currCount by remember { mutableStateOf(0) }
 
+
         LaunchedEffect(Unit){
             currCount = retroCount
+
+            print("At Launch Value of Launch String: $didLaunchFromURL\n")
+
+            didLaunchFromURL = getDidLaunchFromWidget() ?: ""
+
         }
+
+        SideEffect {
+            didLaunchFromURL = getDidLaunchFromWidget() ?: ""
+        }
+
+
+
 
         Column(
             modifier = Modifier
@@ -47,6 +63,8 @@ fun App() {
             Text("Current Count")
 
             Text(currCount.toString())
+
+            Text("Did Launch From Widget? $didLaunchFromURL")
 
             //Plus Button
             Button(onClick = {

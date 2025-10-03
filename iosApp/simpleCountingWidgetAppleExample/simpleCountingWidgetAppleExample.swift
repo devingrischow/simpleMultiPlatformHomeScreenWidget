@@ -67,6 +67,7 @@ struct simpleCountingWidgetAppleExampleEntryView : View {
             
             
         }
+        .widgetURL(URL(string: "simpleCountingExample:://Test"))
     }
 }
 

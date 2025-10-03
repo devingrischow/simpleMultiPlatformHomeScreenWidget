@@ -1,6 +1,8 @@
 package org.devg.widgets
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
@@ -33,12 +35,19 @@ import androidx.glance.layout.width
 import org.devg.app.CounterHandler
 import androidx.core.content.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.core.net.toUri
+import androidx.glance.action.actionStartActivity
+import androidx.glance.action.clickable
+import androidx.glance.appwidget.action.actionStartActivity
+import org.devg.app.MainActivity
 
 val INSTANCEKEY = "group.example.widget_group"
 
 object SimpleCounterWidget: GlanceAppWidget() {
 
     val countKey = intPreferencesKey(CounterHandler().countKey)
+
+
 
 
 
@@ -56,13 +65,25 @@ object SimpleCounterWidget: GlanceAppWidget() {
 
     @Composable
     fun Content() {
+        val context = LocalContext.current
+
+        //Launch Intent
+        val intent = Intent(context, MainActivity::class.java).apply {
+            putExtra("Launch_Key","Launch From Android")
+        }
+
         val count = currentState(key = countKey) ?: 0
+
         Column(
+
             verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(Color.White)
+                .clickable(
+                    onClick = actionStartActivity(intent)
+                )
         ) {
 
             Text(text = "Pressed")
