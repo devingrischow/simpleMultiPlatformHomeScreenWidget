@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.internal.rememberComposableLambda
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.coroutineScope
@@ -25,15 +26,15 @@ fun App() {
 
         var sendVals by remember { mutableStateOf("") }
 
+        //The first call to the count from user widget
         val retroCount = getCountFromUserPreference("group.example.widget_group", CounterHandler().countKey)
-
-
-//        var didLaunchFromURL by remember { mutableStateOf<String>(getDidLaunchFromWidget() ?: "") }
 
         var didLaunchFromURL by remember { mutableStateOf<String>("") }
 
         //Get the curr count, increase it, and send it
         var currCount by remember { mutableStateOf(0) }
+
+        var installedWidgetsLabel by remember { mutableStateOf<String>("") }
 
 
         LaunchedEffect(Unit){
@@ -48,6 +49,7 @@ fun App() {
         SideEffect {
             didLaunchFromURL = getDidLaunchFromWidget() ?: ""
         }
+
 
 
 
@@ -77,6 +79,34 @@ fun App() {
                 Text("+")
                 //Bottom Of Button
             }
+
+
+            //Installed Widgets Label and button
+
+
+
+            //Get installed widgets button
+            Button(onClick = {
+
+                print("Pressed Button\n")
+
+                val newWidgetsToLoad = getWidgetsInfo().toString()
+
+                println("New Widgets to Load: $newWidgetsToLoad")
+
+                installedWidgetsLabel = newWidgetsToLoad
+
+
+
+            }){
+                Text("Get Widgets Info")
+                //Bottom Of Button
+            }
+
+            //Installed Widgets Label
+            Text(installedWidgetsLabel)
+
+
         }
 
 
